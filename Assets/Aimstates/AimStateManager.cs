@@ -5,7 +5,7 @@ using Cinemachine;
 public class AimStateManager : MonoBehaviour
 {
 
-    AimBaseState currentState;
+    public AimBaseState currentState;
     public HipfireState Hip = new HipfireState();
     public AimState Aim = new AimState();
 
@@ -26,9 +26,20 @@ public class AimStateManager : MonoBehaviour
     [SerializeField] float aimSmoothSpeed = 20;
     [SerializeField] LayerMask aimMask;
 
+    float xfollowPos;
+    float yFollowPos, ogYPos;
+    [SerializeField] float crouchCamHeight = 0.6f;
+    [SerializeField] float shoulderSwapSpeed = 10;
+    MovementStateManager moving;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        moving = GetComponent<MovementStateManager>();
+        xfollowPos = camFollowPos.localPosition.x;
+        ogYPos = camFollowPos.localPosition.y;
+        yFollowPos = ogYPos;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();
@@ -59,6 +70,8 @@ public class AimStateManager : MonoBehaviour
             actualAimPos = hit.point;
         }
 
+        MoveCamera();
+
         currentState.UpdateState(this);
     }
 
@@ -72,5 +85,15 @@ public class AimStateManager : MonoBehaviour
     {
         currentState = state;
         currentState.EnterState(this);
+    }
+
+    void MoveCamera()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt)) xfollowPos = -xfollowPos;
+        if (moving.currentState == moving.Crouch) yFollowPos = crouchCamHeight;
+        else yFollowPos = ogYPos;
+
+        Vector3 newFollowPos = new Vector3(xfollowPos, yFollowPos, camFollowPos.localPosition.x);
+        camFollowPos.localPosition = Vector3.Lerp(camFollowPos.localPosition, newFollowPos, shoulderSwapSpeed * Time.deltaTime);
     }
 }
