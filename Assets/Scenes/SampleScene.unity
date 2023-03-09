@@ -5287,6 +5287,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: runSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: jumpForce
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: walkSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: crouchSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: runBackSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 70685361, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
+      propertyPath: crouchBackSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 70685363, guid: 2ebde0224e8988c46ab94b126664acee, type: 3}
       propertyPath: aimPos
       value: 
@@ -7238,7 +7262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d5b851f18ebb04bb579970ada3ba5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultBloomAngle: 3
+  defaultBloomAngle: 1.5
   walkBloomMultiplier: 1.5
   crouchBloomMultiplier: 0.5
   runBloomMultiplier: 2
