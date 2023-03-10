@@ -1,0 +1,42 @@
+{
+  "name": "XenoShot #73",
+  "symbol": "XS",
+  "description": "XenoShot is an Play2Earn game where you can use NFTs and weapons!",
+  "seller_fee_basis_points": 1000,
+  "image": "73.png",
+  "external_url": "https://www.xenoshot.com",
+  "edition": 73,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Blade",
+      "value": "BasicBlade"
+    },
+    {
+      "trait_type": "Handle",
+      "value": "BasicHandle"
+    },
+    {
+      "trait_type": "Hilt",
+      "value": "FlameHilt"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "73.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "9gQLvx2WnhceaRg3pYpQ2UULKbq2BZQUWYdKDX14WRWh",
+        "share": 100
+      }
+    ]
+  }
+}
