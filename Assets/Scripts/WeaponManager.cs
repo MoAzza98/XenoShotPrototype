@@ -10,10 +10,12 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] bool semiAuto;
 
     [Header("Bullet Properties")]
+    [SerializeField] GameObject impactEffect;
     [SerializeField] GameObject bullet;
+    [SerializeField] public GameObject impact;
     [SerializeField] Transform barrelPos;
     [SerializeField] float bulletVelocity;
-    [SerializeField] int bulletsPerShot;
+    [SerializeField] public int bulletsPerShot;
     public float damage = 20;
     AimStateManager aim;
     public ParticleSystem muzzleFlash;
@@ -50,9 +52,15 @@ public class WeaponManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Shouldfire()) Fire();
-        //Debug.Log(ammo.currentAmmo);
-        muzzleFlashLight.intensity = Mathf.Lerp(muzzleFlashLight.intensity, 0, lightReturnSpeed * Time.deltaTime);
+        if (aim.controlSystem.isDisabled)
+        {
+            if (Shouldfire()) Fire();
+            muzzleFlashLight.intensity = Mathf.Lerp(muzzleFlashLight.intensity, 0, lightReturnSpeed * Time.deltaTime);
+        }
+        else {
+            return;
+        }
+
     }
 
     bool Shouldfire()
@@ -68,6 +76,7 @@ public class WeaponManager : MonoBehaviour
 
     void Fire()
     {
+
         magBullet.Play();
         muzzleFlash.Play();
         fireRateTimer = 0;
@@ -80,6 +89,17 @@ public class WeaponManager : MonoBehaviour
         ammo.currentAmmo--;
         for(int i = 0; i < bulletsPerShot; i++)
         {
+
+            Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+            Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aim.aimMask))
+            {
+
+                Instantiate(impactEffect, hit.point + (hit.normal * 0.1f), Quaternion.FromToRotation(Vector3.up, hit.normal));
+
+            }
+
             GameObject currentBullet = Instantiate(bullet, barrelPos.position, barrelPos.rotation);
 
             Bullet bulletScript = currentBullet.GetComponent<Bullet>();

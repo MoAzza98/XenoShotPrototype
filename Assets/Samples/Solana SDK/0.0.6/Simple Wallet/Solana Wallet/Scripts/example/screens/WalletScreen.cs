@@ -16,6 +16,10 @@ namespace Solana.Unity.SDK.Example
 {
     public class WalletScreen : SimpleScreen
     {
+        [HideInInspector]
+        public int ownedTokens = 0;
+        [SerializeField]
+        TextMeshProUGUI tokenNumber;
         [SerializeField]
         private TextMeshProUGUI lamports;
         [SerializeField]
@@ -135,6 +139,7 @@ namespace Solana.Unity.SDK.Example
 
         private async UniTask GetOwnedTokenAccounts()
         {
+            ownedTokens = 0;
             var tokens = await Web3.Base.GetTokenAccounts(Commitment.Confirmed);
             // Remove tokens not owned anymore and update amounts
             var tkToRemove = new List<TokenItem>();
@@ -169,6 +174,8 @@ namespace Solana.Unity.SDK.Example
                         var tk = Instantiate(tokenItem, tokenContainer, true);
                         tk.transform.localScale = Vector3.one;
 
+                        ownedTokens++;
+
                         Nft.Nft.TryGetNftData(item.Account.Data.Parsed.Info.Mint,
                             Web3.Instance.Wallet.ActiveRpcClient).AsUniTask().ContinueWith(nft =>
                         {
@@ -183,6 +190,7 @@ namespace Solana.Unity.SDK.Example
                     }
                 }
             }
+            tokenNumber.text = ownedTokens.ToString();
         }
         
         public static async UniTask<TokenMintResolver> GetTokenMintResolver()

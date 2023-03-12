@@ -5,10 +5,18 @@ namespace QFX.IFX
     {
         public float LifeTime;
 
+
+        private void Start()
+        {
+            Destroy(this.gameObject, LifeTime);
+        }
+
+        /*
         public override void Run()
         {
             base.Run();
             Destroy(gameObject, LifeTime);
         }
+        */
     }
 }

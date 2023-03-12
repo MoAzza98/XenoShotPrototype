@@ -26,7 +26,8 @@ public class Bullet : MonoBehaviour
             EnemyHealth enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealth>();
             enemyHealth.TakeDamage(weapon.damage);
         }
-        impactMark.Play();
+        //impactMark.Play();
         Destroy(this.gameObject);
+
     }
 }

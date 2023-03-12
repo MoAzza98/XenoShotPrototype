@@ -8,11 +8,13 @@ public class AimStateManager : MonoBehaviour
     public AimBaseState currentState;
     public HipfireState Hip = new HipfireState();
     public AimState Aim = new AimState();
+    public UIControls controlSystem;
 
     //public Cinemachine.AxisState xAxis, yAxis;
     [SerializeField] float mouseSense = 1; 
     float xAxis, yAxis;
     [SerializeField] Transform camFollowPos;
+    [SerializeField] GameObject impactEffect;
 
     [HideInInspector] public Animator anim;
     [HideInInspector] public CinemachineVirtualCamera vCam;
@@ -24,7 +26,7 @@ public class AimStateManager : MonoBehaviour
     public Transform aimPos;
     [HideInInspector] public Vector3 actualAimPos;
     [SerializeField] float aimSmoothSpeed = 20;
-    [SerializeField] LayerMask aimMask;
+    [SerializeField] public LayerMask aimMask;
 
     float xfollowPos;
     float yFollowPos, ogYPos;
@@ -36,6 +38,7 @@ public class AimStateManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        controlSystem = FindObjectOfType<UIControls>();
         moving = GetComponent<MovementStateManager>();
         xfollowPos = camFollowPos.localPosition.x;
         ogYPos = camFollowPos.localPosition.y;
@@ -51,28 +54,35 @@ public class AimStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        xAxis += Input.GetAxisRaw("Mouse X") * mouseSense;
-        yAxis -= Input.GetAxisRaw("Mouse Y") * mouseSense;
-        yAxis = Mathf.Clamp(yAxis, -80, 80);
-
-        vCam.m_Lens.FieldOfView = Mathf.Lerp(vCam.m_Lens.FieldOfView, currentFov, fovSmoothSpeed * Time.deltaTime);
-
-        Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aimMask))
+        if(controlSystem.isDisabled == true)
         {
-            aimPos.position = Vector3.Lerp(aimPos.position, hit.point, aimSmoothSpeed * Time.deltaTime);
-        }
-        else
+            xAxis += Input.GetAxisRaw("Mouse X") * mouseSense;
+            yAxis -= Input.GetAxisRaw("Mouse Y") * mouseSense;
+            yAxis = Mathf.Clamp(yAxis, -80, 80);
+
+            vCam.m_Lens.FieldOfView = Mathf.Lerp(vCam.m_Lens.FieldOfView, currentFov, fovSmoothSpeed * Time.deltaTime);
+
+            Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+            Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, aimMask))
+            {
+                aimPos.position = Vector3.Lerp(aimPos.position, hit.point, aimSmoothSpeed * Time.deltaTime);
+            }
+            else
+            {
+                aimPos.position = Vector3.Lerp(aimPos.position, ray.GetPoint(500), aimSmoothSpeed * Time.deltaTime);
+                actualAimPos = hit.point;
+            }
+
+            MoveCamera();
+            currentState.UpdateState(this);
+
+        } else if(controlSystem.isDisabled == false)
         {
-            aimPos.position = Vector3.Lerp(aimPos.position, ray.GetPoint(500), aimSmoothSpeed * Time.deltaTime);
-            actualAimPos = hit.point;
+            return;
         }
 
-        MoveCamera();
-
-        currentState.UpdateState(this);
     }
 
     private void LateUpdate()
