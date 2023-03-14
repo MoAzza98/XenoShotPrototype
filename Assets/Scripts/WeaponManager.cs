@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
@@ -13,10 +14,14 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] GameObject impactEffect;
     [SerializeField] GameObject bullet;
     [SerializeField] public GameObject impact;
-    [SerializeField] Transform barrelPos;
-    [SerializeField] float bulletVelocity;
+    [SerializeField] public Transform barrelPos;
+    [SerializeField] public float bulletVelocity;
     [SerializeField] public int bulletsPerShot;
+    [SerializeField] TextMeshProUGUI extraAmmo;
+    [SerializeField] TextMeshProUGUI currentAmmo;
     public float damage = 20;
+    public float critDamage = 35;
+    [SerializeField] public float critChance = 15.0f;
     AimStateManager aim;
     public ParticleSystem muzzleFlash;
     public ParticleSystem magBullet;
@@ -76,7 +81,6 @@ public class WeaponManager : MonoBehaviour
 
     void Fire()
     {
-
         magBullet.Play();
         muzzleFlash.Play();
         fireRateTimer = 0;
@@ -87,7 +91,9 @@ public class WeaponManager : MonoBehaviour
         recoil.TriggerRecoil();
         TriggerMuzzleFlashLight();
         ammo.currentAmmo--;
-        for(int i = 0; i < bulletsPerShot; i++)
+        currentAmmo.text = ammo.currentAmmo.ToString();
+        extraAmmo.text = ammo.extraAmmo.ToString();
+        for (int i = 0; i < bulletsPerShot; i++)
         {
 
             Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);

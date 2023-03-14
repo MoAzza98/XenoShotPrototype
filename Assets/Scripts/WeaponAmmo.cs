@@ -25,6 +25,7 @@ public class WeaponAmmo : MonoBehaviour
 
     public void Reload()
     {
+
         if(extraAmmo >= clipSize)
         {
             int ammoToReload = clipSize - currentAmmo;
