@@ -1,1 +1,1 @@
-# Metaplex Candy Machine Reference UI
+# XenoShot candy machine frontend
