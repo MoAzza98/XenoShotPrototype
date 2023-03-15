@@ -11,6 +11,7 @@ public class UIControls : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentAmmo;
 
     [SerializeField] GameObject rewardPanel;
+    [SerializeField] GameObject NFTPanel;
     [SerializeField] GameObject backSword1;
     [SerializeField] GameObject backItem2;
     [SerializeField] GameObject backItem3;
@@ -37,6 +38,19 @@ public class UIControls : MonoBehaviour
                 rewardPanel.SetActive(true);
             }
             
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (NFTPanel.active)
+            {
+                NFTPanel.SetActive(false);
+            }
+            else
+            {
+                NFTPanel.SetActive(true);
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.I))

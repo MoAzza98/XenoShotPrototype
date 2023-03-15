@@ -21,7 +21,8 @@ public class PatrolBehaviour : StateMachineBehaviour
 
         }
         agent = animator.GetComponent<NavMeshAgent>();
-        agent.SetDestination(wayPoints[0].position);
+        int nextWaypoint = Random.Range(0, wayPoints.Count+1);
+        agent.SetDestination(wayPoints[nextWaypoint].position);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
